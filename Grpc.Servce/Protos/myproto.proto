@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package grpc.server.myproto;
+
+service MessageService {
+    rpc SendNewMessage (SendMessageRequest) returns (SendMessageReply);
+}
+
+message SendMessageRequest {
+    string title = 1;
+    string content = 2;
+    bool notice_target = 3;
+
+}
+
+message SendMessageReply {
+    bool success = 1;
+}
