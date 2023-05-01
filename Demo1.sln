@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grpc.Servce", "Grpc.Servce\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grpc.Client", "Grpc.Client\Grpc.Client.csproj", "{AAC99FF9-1A7D-44B1-8D4E-CBF15A0C33F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grpc.ServerTests", "Grpc.ServerTests\Grpc.ServerTests.csproj", "{F93AA103-4113-4C8B-B0AF-AA445B7CE322}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{AAC99FF9-1A7D-44B1-8D4E-CBF15A0C33F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAC99FF9-1A7D-44B1-8D4E-CBF15A0C33F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAC99FF9-1A7D-44B1-8D4E-CBF15A0C33F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F93AA103-4113-4C8B-B0AF-AA445B7CE322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F93AA103-4113-4C8B-B0AF-AA445B7CE322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F93AA103-4113-4C8B-B0AF-AA445B7CE322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F93AA103-4113-4C8B-B0AF-AA445B7CE322}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
