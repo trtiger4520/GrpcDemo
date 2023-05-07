@@ -1,4 +1,4 @@
-using Grpc.Servce;
+using Grpc.Server;
 
 namespace Grpc.ServerTests;
 

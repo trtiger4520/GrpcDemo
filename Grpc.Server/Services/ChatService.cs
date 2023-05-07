@@ -1,12 +1,11 @@
 using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
-using Grpc.Servce.Chat;
-using Grpc.Servce.Proto;
+using Grpc.Server.Chat;
 
-namespace Grpc.Servce.Services;
+namespace Grpc.Server.Services;
 
-public class ChatService : Proto.Chat.ChatBase
+public class ChatService : Chat.ChatBase
 {
     private readonly ChatServer _server;
     private readonly IDatetimeProvider _provider;

@@ -4,7 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -18,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Grpc.Servce\Grpc.Servce.csproj" />
+    <ProjectReference Include="..\Grpc.Server\Grpc.Servce.csproj" />
   </ItemGroup>
 
 </Project>

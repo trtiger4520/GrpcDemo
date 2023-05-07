@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Grpc.Servce.Chat;
+namespace Grpc.Server.Chat;
 
 [Serializable]
 public class UserNotInRoomException : Exception

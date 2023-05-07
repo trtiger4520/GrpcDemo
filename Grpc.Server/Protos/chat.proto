@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option csharp_namespace = "Grpc.Servce.Proto";
+option csharp_namespace = "Grpc.Server.Services";
 
-package grpc.server.chat;
+package chat;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";

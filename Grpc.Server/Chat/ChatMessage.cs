@@ -1,4 +1,4 @@
-namespace Grpc.Servce.Chat;
+namespace Grpc.Server.Chat;
 
 public record ChatMessage(
     Guid Id,

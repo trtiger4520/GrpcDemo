@@ -1,12 +1,16 @@
-using Grpc.Servce;
-using Grpc.Servce.Chat;
+using Grpc.Server;
+using Grpc.Server.Chat;
 
 namespace Grpc.ServerTests.Chat;
 
 public class ChatServerTests
 {
+#pragma warning disable 8618
+
     private ChatServer _server;
     private IDatetimeProvider _datetimeProvider;
+
+#pragma warning restore 8618
 
     [SetUp]
     public void Setup()

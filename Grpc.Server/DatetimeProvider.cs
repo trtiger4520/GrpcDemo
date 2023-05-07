@@ -1,4 +1,4 @@
-namespace Grpc.Servce;
+namespace Grpc.Server;
 
 public interface IDatetimeProvider
 {
