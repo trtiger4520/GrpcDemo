@@ -13,6 +13,7 @@ builder.Services.AddGrpcClient<Chat.ChatClient>(
     o => o.Address = new Uri("http://localhost:5134"));
 
 builder.Services.AddSingleton<System.Threading.Channels.ChannelReader<Command>>(commandChannel);
+builder.Services.AddSingleton<ChatHandler>();
 builder.Services.AddHostedService<Worker>();
 
 var host = builder.Build();

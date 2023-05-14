@@ -16,18 +16,32 @@ public class ChatService : Chat.ChatBase
         _provider = provider;
     }
 
-    public override Task GetChannelList(UserId request, IServerStreamWriter<ChannelInfo> responseStream, ServerCallContext context)
+    public override Task<ChannelList> GetChannelList(UserId request, ServerCallContext context)
     {
-        foreach (var room in _server.Rooms)
+        var channels = _server.GetRooms().Select(room => new Channel()
         {
-            responseStream.WriteAsync(new ChannelInfo()
-            {
-                Id = room.Id.ToString(),
-                Name = room.Name,
-            });
-        }
+            Id = new() { Id = room.Id.ToString() },
+            Code = room.Code,
+            Name = room.Name,
+        });
 
-        return Task.CompletedTask;
+        var result = new ChannelList();
+
+        result.Channels.AddRange(channels);
+
+        return Task.FromResult(result);
+    }
+
+    public override Task<Channel> CreateChannel(Empty request, ServerCallContext context)
+    {
+        var room = _server.CreateRoom();
+
+        return Task.FromResult(new Channel()
+        {
+            Id = new() { Id = room.Id.ToString() },
+            Code = room.Code,
+            Name = room.Name,
+        });
     }
 
     public override Task<Channel> JoinChannel(JoinChannelRequest request, ServerCallContext context)
@@ -39,9 +53,46 @@ public class ChatService : Chat.ChatBase
 
         return Task.FromResult(new Channel()
         {
-            Id = new ChannelId() { Id = room.Id.ToString() },
+            Id = new() { Id = room.Id.ToString() },
+            Code = room.Code,
             Name = room.Name,
         });
+    }
+
+    public override Task<Channel> JoinChannelByCode(JoinChannelByCodeRequest request, ServerCallContext context)
+    {
+        var user = _server.GetUser(Guid.Parse(request.UserId.Id));
+        var room = _server.GetRoomByCode(request.Code);
+
+        _server.JoinUserInZoom(user, room.Id);
+
+        return Task.FromResult(new Channel()
+        {
+            Id = new() { Id = room.Id.ToString() },
+            Code = room.Code,
+            Name = room.Name,
+        });
+    }
+
+    public override Task<ChannelMembers> GetChannelMembers(ChannelId request, ServerCallContext context)
+    {
+        var room = _server.GetRoom(Guid.Parse(request.Id));
+        var members = room.Users.Select((roomUser) =>
+        {
+            var user = _server.GetUser(roomUser.Key);
+
+            return new UserInfo()
+            {
+                Id = new() { Id = user.Id.ToString() },
+                Name = user.Name,
+            };
+        });
+
+        var result = new ChannelMembers();
+
+        result.Members.AddRange(members);
+
+        return Task.FromResult(result);
     }
 
     public override Task<UserInfo> Login(LoginRequest request, ServerCallContext context)
@@ -84,15 +135,15 @@ public class ChatService : Chat.ChatBase
     {
         var room = _server.GetRoom(Guid.Parse(request.Id));
 
-        room.MessageReceived += OnMessageReceived();
+        room.MessageReceived += OnMessageReceived(context.CancellationToken);
 
         context.CancellationToken.WaitHandle.WaitOne();
 
-        room.MessageReceived -= OnMessageReceived();
+        room.MessageReceived -= OnMessageReceived(context.CancellationToken);
 
         return Task.CompletedTask;
 
-        EventHandler<ChatMessage> OnMessageReceived() => (_, message) =>
+        EventHandler<ChatMessage> OnMessageReceived(CancellationToken cancellationToken) => (_, message) =>
         {
             var user = _server.GetUser(message.UserId);
             responseStream.WriteAsync(new Message()
@@ -101,7 +152,7 @@ public class ChatService : Chat.ChatBase
                 SenderName = user.Name,
                 Content = message.Content,
                 Timestamp = Timestamp.FromDateTimeOffset(message.CreatedAt),
-            });
+            }, cancellationToken);
         };
     }
 

@@ -4,13 +4,12 @@ public class ChatServer
 {
     private readonly ICollection<ChatUser> _users;
     private readonly IDatetimeProvider _provider;
-
-    public ICollection<ChatRoom> Rooms { get; }
+    private readonly ICollection<ChatRoom> _rooms;
 
     public ChatServer(IDatetimeProvider provider)
     {
         this._users = new List<ChatUser>();
-        this.Rooms = new List<ChatRoom>();
+        this._rooms = new List<ChatRoom>();
         this._provider = provider;
     }
 
@@ -20,8 +19,14 @@ public class ChatServer
     public ChatRoom CreateRoom(string name = "")
     {
         name = string.IsNullOrEmpty(name) ? RandomZoomName() : name;
-        var room = new ChatRoom(Guid.NewGuid(), name, _provider.Now, _provider);
-        Rooms.Add(room);
+        var id = Guid.NewGuid();
+        var code = ChatRoomCodeGenerator.Generate();
+
+        while (_rooms.Any(r => r.Code == code))
+            code = ChatRoomCodeGenerator.Generate();
+
+        var room = new ChatRoom(id, code, name, _provider.Now, _provider);
+        _rooms.Add(room);
         return room;
     }
 
@@ -42,11 +47,19 @@ public class ChatServer
 
     public ChatRoom GetRoom(Guid roomId) => GetRoomById(roomId);
 
+    public ICollection<ChatRoom> GetRooms()
+    {
+        return _rooms;
+    }
+
+    public ChatRoom GetRoomByCode(string code)
+        => _rooms.FirstOrDefault(r => r.Code == code) ?? throw new ChatRoomNotFoundException();
+
     private ChatUser GetUserById(Guid userId)
         => _users.FirstOrDefault(r => r.Id == userId) ?? throw new ChatUserNotFoundException();
 
     private ChatRoom GetRoomById(Guid roomId)
-        => Rooms.FirstOrDefault(r => r.Id == roomId) ?? throw new ChatRoomNotFoundException();
+        => _rooms.FirstOrDefault(r => r.Id == roomId) ?? throw new ChatRoomNotFoundException();
 
     private static string RandomZoomName() => $"Zoom-{Guid.NewGuid()}";
 

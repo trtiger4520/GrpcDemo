@@ -6,9 +6,10 @@ public class ChatRoom
     public event EventHandler<ChatMessage>? MessageReceived;
     public event EventHandler<ChatRoomUser>? UserJoined;
 
-    public ChatRoom(Guid id, string name, DateTimeOffset createdAt, IDatetimeProvider provider)
+    public ChatRoom(Guid id, string code, string name, DateTimeOffset createdAt, IDatetimeProvider provider)
     {
         this.Id = id;
+        this.Code = code;
         this.Name = name;
         this.CreatedAt = createdAt;
         this.Users = new Dictionary<Guid, ChatRoomUser>();
@@ -17,6 +18,7 @@ public class ChatRoom
     }
 
     public Guid Id { get; }
+    public string Code { get; }
     public string Name { get; }
     public DateTimeOffset CreatedAt { get; }
     public IDictionary<Guid, ChatRoomUser> Users { get; }
