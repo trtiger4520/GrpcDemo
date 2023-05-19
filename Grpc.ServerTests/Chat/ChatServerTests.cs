@@ -3,6 +3,7 @@ using Grpc.Server.Chat;
 
 namespace Grpc.ServerTests.Chat;
 
+[TestFixture]
 public class ChatServerTests
 {
 #pragma warning disable 8618

@@ -14,7 +14,8 @@ public class GreeterService : Greeter.GreeterBase
     {
         return Task.FromResult(new HelloReply
         {
-            Message = "Hello " + request.Name
+            Message = "Hello " + request.Name,
+            Amount = 123m
         });
     }
 }
